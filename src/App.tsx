@@ -1,9 +1,8 @@
-
 function App() {
-
   return (
     <>
-     <h1>MovieMood</h1>
+      <h1>MovieMood</h1>
+      
     </>
   )
 }
