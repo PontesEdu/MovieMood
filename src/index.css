@@ -1,1 +1,19 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@theme {
+  --color-background: #0a0c11;
+  --color-foreground: #f2f3f5;
+  --color-card: #12151c;
+  --color-muted-foreground: #a3aab8;
+  --color-primary: #f5b544;
+  --color-primary-foreground: #0a0c11;
+
+  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}

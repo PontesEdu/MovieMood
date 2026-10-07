@@ -1,3 +1,5 @@
 export function App() {
-  return <h1 className="text-4xl font-bold text-amber-400">MovieMood</h1>
+  return (
+    <h1 className="font-display text-primary text-4xl font-bold">MovieMood</h1>
+  )
 }
