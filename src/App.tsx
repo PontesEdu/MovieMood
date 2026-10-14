@@ -1,28 +1,38 @@
-import { useEffect, useState } from "react"
-import type { Movie } from "./types/movie"
-import { getTrendingMovies } from "./api/movies"
+import { useEffect, useState } from 'react'
+import type { Movie } from './types/movie'
+import { getTrendingMovies } from './api/movies'
 
 export function App() {
+  const [movies, setMovies] = useState<Movie[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const [movie, setMovies] = useState<Movie[]>([])
-
-  useEffect( () => {
-
+  useEffect(() => {
     const carregarFilmes = async () => {
-      const movies = await getTrendingMovies()
-      setMovies(movies)
-    } 
+      try {
+        const data = await getTrendingMovies()
+        setMovies(data)
+      } catch {
+        setError('não foi possivel carregar filmes')
+      } finally {
+        setIsLoading(false)
+      }
+    }
 
     carregarFilmes()
-    
   }, [])
+
+  if (isLoading) return <p>Carregando…</p>
+  if (error) return <p>{error}</p>
+  if (movies.length === 0) return <p>Nenhum filme encontrado.</p>
 
   return (
     <div>
-      {movie.map((item: Movie) => (
-        
-        <h1 key={item.id}>{item.title}</h1>
-      ))}
+      <ul>
+        {movies.map((movie) => (
+          <li key={movie.id}> {movie.title}</li>
+        ))}
+      </ul>
     </div>
   )
 }
