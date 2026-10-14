@@ -31,6 +31,14 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **`new URL` + `searchParams`** para montar endereços, em vez de juntar texto (trata espaços e `&`).
 - **`await` ou `.then()`, nunca os dois juntos.**
 
+## TanStack Query
+
+- **Estado do servidor ≠ estado local.** Os filmes moram na API; o app só tem uma cópia. O TanStack Query gerencia essa cópia: busca, cache, evita requisições repetidas e atualiza.
+- **`queryKey` é o nome do dado no cache** (`['movies', 'trending']`). Mesma chave = mesmo dado e uma requisição só. **`queryFn` recebe a função sem parênteses**: quem chama é a biblioteca.
+- **No v5, usar `isPending`** ("ainda não tenho dado"). `isLoading` é outra coisa; tutoriais do v4 usam o nome antigo.
+- **O `QueryClient` é criado fora de componentes**, senão um cache novo nasceria a cada renderização.
+- **`staleTime` padrão é 0:** todo dado nasce "velho" e é buscado de novo ao voltar para a aba ou remontar o componente.
+
 ## React
 
 - **`StrictMode` roda renderização e efeitos duas vezes em desenvolvimento**, de propósito, para revelar efeitos que não se limpam. Em produção roda uma vez. O banner de erro na tela é do Vite, não do StrictMode.
@@ -40,3 +48,5 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **A função do `useEffect` não pode ser `async`:** criar uma função `async` dentro dele e chamá-la.
 - **Buscar dados tem quatro estados:** carregando (`isLoading` começa `true`), erro, vazio e sucesso. `setIsLoading(false)` vai no `finally`, senão um erro deixa a tela carregando para sempre. Um `if` com `return` por estado, sucesso por último.
 - **`key` vai no elemento mais de fora que o `map` devolve**, e o `map` repete só o que se repete (`<li>`, não o `<ul>`). Usar o `id`, não o índice.
+- **Estreitamento de tipo:** depois de `if (isPending) return` e `if (error) return`, o TypeScript sabe que `data` existe. A ordem dos `if`s importa.
+- **Só envolver elementos com motivo** (estilo do grupo ou mais de um elemento). `<div>` ou Fragment em volta de um único elemento é camada sobrando.
