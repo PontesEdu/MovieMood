@@ -1,15 +1,7 @@
-import { getTrendingMovies } from './api/movies'
-import { useQuery } from '@tanstack/react-query'
+import { useTrendingMovies } from './hooks/use-trending-movies'
 
 export function App() {
-  const {
-    data: movies,
-    isPending,
-    error,
-  } = useQuery({
-    queryKey: ['movies', 'trending'],
-    queryFn: getTrendingMovies,
-  })
+  const { data: movies, isPending, error } = useTrendingMovies()
 
   if (isPending) return <p>Carregando…</p>
   if (error) return <p>Não foi possível carregar os filmes.</p>
