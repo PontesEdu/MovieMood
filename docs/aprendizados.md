@@ -38,6 +38,13 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **No v5, usar `isPending`** ("ainda não tenho dado"). `isLoading` é outra coisa; tutoriais do v4 usam o nome antigo.
 - **O `QueryClient` é criado fora de componentes**, senão um cache novo nasceria a cada renderização.
 - **`staleTime` padrão é 0:** todo dado nasce "velho" e é buscado de novo ao voltar para a aba ou remontar o componente.
+- **Padrão no `QueryClient`, exceção na query.** `defaultOptions.queries.staleTime` vale para todas; uma query pode definir o próprio.
+- **`staleTime` ≠ `refetchInterval`.** O `staleTime` só diz se o dado está velho; a busca precisa de um gatilho (montar, foco, reconexão). Buscar sozinho de tempos em tempos é `refetchInterval`.
+- **Custom hook devolve o resultado do `useQuery` inteiro.** Desmontar em variáveis e montar um objeto novo quebra a ligação entre `isPending`, `error` e `data`, e o TypeScript volta a achar que `data` pode ser `undefined`.
+
+## Camadas
+
+- **componente → hook → api → cliente.** `api/` são funções comuns, sem React (podem rodar em qualquer lugar). `hooks/` só funciona dentro de componentes. Custom hook = função que começa com `use` e usa outros hooks.
 
 ## React
 
