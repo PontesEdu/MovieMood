@@ -56,4 +56,10 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **Buscar dados tem quatro estados:** carregando (`isLoading` começa `true`), erro, vazio e sucesso. `setIsLoading(false)` vai no `finally`, senão um erro deixa a tela carregando para sempre. Um `if` com `return` por estado, sucesso por último.
 - **`key` vai no elemento mais de fora que o `map` devolve**, e o `map` repete só o que se repete (`<li>`, não o `<ul>`). Usar o `id`, não o índice.
 - **Estreitamento de tipo:** depois de `if (isPending) return` e `if (error) return`, o TypeScript sabe que `data` existe. A ordem dos `if`s importa.
+- **Props são a entrada do componente**, tipadas com um `type ...Props`. O componente só lê, nunca altera. Texto vai entre aspas; outros valores entre chaves.
+- **O que não depende de props ou estado fica fora do componente** (ex.: `new Intl.NumberFormat`), senão é recriado a cada renderização.
+- **Card = partes empilhadas.** A caixa com `aspect-2/3` é só do pôster; título e ano ficam fora dela, senão transbordam.
+- **Caixa com proporção fixa evita layout shift:** o espaço da imagem é reservado antes dela carregar. `loading="lazy"` faz o navegador só baixar imagens perto da área visível.
+- **Hierarquia de títulos:** um `h1` por página, `h2` por seção, `h3` por item. Leitores de tela e o Google navegam por ela.
+- **Tipo de união de literais** (`'w342' | 'w780'`) restringe um parâmetro a valores conhecidos.
 - **Só envolver elementos com motivo** (estilo do grupo ou mais de um elemento). `<div>` ou Fragment em volta de um único elemento é camada sobrando.
