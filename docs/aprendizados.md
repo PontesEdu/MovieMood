@@ -62,4 +62,8 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **Caixa com proporção fixa evita layout shift:** o espaço da imagem é reservado antes dela carregar. `loading="lazy"` faz o navegador só baixar imagens perto da área visível.
 - **Hierarquia de títulos:** um `h1` por página, `h2` por seção, `h3` por item. Leitores de tela e o Google navegam por ela.
 - **Tipo de união de literais** (`'w342' | 'w780'`) restringe um parâmetro a valores conhecidos.
+- **Retorno antecipado vale para o componente inteiro.** Se o `App` faz `if (isPending) return`, o cabeçalho some junto. A busca de dados fica no componente que usa os dados.
+- **Conteúdo variável sob um título fixo:** calcular o conteúdo numa variável (`let content` + `if/else if/else`) e usar `{content}` num único `return`. JSX é um valor como outro qualquer.
+- **Código morto passa no lint, no TypeScript e no build.** Esqueci os `if ... return` antigos acima da versão nova, e o título continuou sumindo. Só o teste na tela mostrou. Ler o `git diff` antes do commit pega esse tipo de sobra.
+- **`<a href>` recarrega a página inteira** (perde estado e cache). Com React Router usa-se `<Link to>`, que vira um `<a>` no HTML mas troca de tela sem recarregar.
 - **Só envolver elementos com motivo** (estilo do grupo ou mais de um elemento). `<div>` ou Fragment em volta de um único elemento é camada sobrando.
