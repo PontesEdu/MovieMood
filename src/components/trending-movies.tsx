@@ -4,10 +4,6 @@ import { MovieCard } from './movie-card'
 export function TrendingMovies() {
   const { data: movies, isPending, error } = useTrendingMovies()
 
-  if (isPending) return <p>Carregando…</p>
-  if (error) return <p>Não foi possível carregar os filmes.</p>
-  if (movies.length === 0) return <p>Nenhum filme encontrado.</p>
-
   let content
 
   if (isPending) {
