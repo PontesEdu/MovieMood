@@ -31,10 +31,10 @@ export function Header() {
               <Link to="/">Início</Link>
             </li>
             <li>
-              <Link to="/movie:">Descobrir</Link>
+              <Link to="/descobrir">Descobrir</Link>
             </li>
             <li>
-              <Link to="/">Minha Lista</Link>
+              <Link to="/minha-lista">Minha lista</Link>
             </li>
           </ul>
         </nav>
