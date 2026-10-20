@@ -15,3 +15,14 @@ export type MovieListResponse = {
   total_pages: number
   total_results: number
 }
+
+export type Genre = {
+  id: number
+  name: string
+}
+
+export type MovieDetails = Omit<Movie, 'genre_ids'> & {
+  genres: Genre[]
+  runtime: number | null
+  tagline: string
+}

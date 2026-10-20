@@ -11,7 +11,7 @@ export async function tmdbFetch<T>(path: string): Promise<T> {
   })
 
   if (!response.ok) {
-    throw new Error(`Falhou com status ${response.status}`)
+    throw new TmdbError(response.status)
   }
 
   return response.json()
@@ -21,4 +21,13 @@ type ImageSize = 'w342' | 'w780' | 'w1280'
 
 export function getImageUrl(path: string, size: ImageSize) {
   return `${IMAGE_BASE_URL}${size}${path}`
+}
+
+export class TmdbError extends Error {
+  status: number
+
+  constructor(status: number) {
+    super(`TMDB respondeu com status ${status}`)
+    this.status = status
+  }
 }

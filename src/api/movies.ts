@@ -1,8 +1,12 @@
-import type { MovieListResponse } from '../types/movie'
+import type { MovieDetails, MovieListResponse } from '../types/movie'
 import { tmdbFetch } from './tmdb'
 
 export async function getTrendingMovies() {
   const data = await tmdbFetch<MovieListResponse>('/trending/movie/week')
 
   return data.results
+}
+
+export async function getMovieDetails(movieId: string) {
+  return await tmdbFetch<MovieDetails>(`/movie/${movieId}`)
 }

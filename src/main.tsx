@@ -9,6 +9,7 @@ import { RouterProvider } from 'react-router/dom'
 import { HomePage } from './pages/home-page'
 import { MovieDetailsPage } from './pages/movie-details-page'
 import { NotFoundPage } from './pages/not-found-page'
+import { TmdbError } from './api/tmdb'
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 5,
+      retry: (failureCount, error) => {
+        if (error instanceof TmdbError && error.status === 404) return false
+        return failureCount < 3
+      },
     },
   },
 })
