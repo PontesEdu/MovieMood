@@ -31,6 +31,18 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **`new URL` + `searchParams`** para montar endereços, em vez de juntar texto (trata espaços e `&`).
 - **`await` ou `.then()`, nunca os dois juntos.**
 
+## Dependências
+
+- **Conferir o campo `engines` antes de instalar.** O React Router 8 exige Node 22.22+; com Node mais antigo o npm só mostra um aviso `EBADENGINE` e instala assim mesmo. Depois de atualizar o Node, reiniciar o VS Code para o terminal enxergar a versão nova.
+- **Tutoriais antigos envelhecem rápido.** No React Router 8 o `react-router-dom` não existe mais: tudo vem de `react-router`, e o `RouterProvider` de `react-router/dom`.
+
+## React Router
+
+- **Modos:** Declarativo (`<BrowserRouter>`), Data (`createBrowserRouter`, rotas fora dos componentes) e Framework (plugin do Vite, parecido com Next.js). Usamos Data, com os dados no TanStack Query.
+- **Layout com `<Outlet />`:** a rota pai tem o que se repete (cabeçalho) e o `<Outlet />` marca onde a página filha entra. `index: true` é a filha do endereço exato do pai; `'*'` pega o que nenhuma rota casou.
+- **`pages/` x `components/`:** página é o componente ligado a uma rota; componentes são peças usadas pelas páginas.
+- **`<Link to>` em vez de `<a href>`:** troca de tela sem recarregar, mantendo o cache.
+
 ## TanStack Query
 
 - **Estado do servidor ≠ estado local.** Os filmes moram na API; o app só tem uma cópia. O TanStack Query gerencia essa cópia: busca, cache, evita requisições repetidas e atualiza.
