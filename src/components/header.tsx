@@ -1,3 +1,5 @@
+import { Link } from 'react-router'
+
 export function Header() {
   return (
     <header className="border-b border-white/10">
@@ -26,13 +28,13 @@ export function Header() {
         <nav>
           <ul className="flex items-center gap-6">
             <li>
-              <a href="/inicio">Início</a>
+              <Link to="/">Início</Link>
             </li>
             <li>
-              <a href="/descobrir">Descobrir</a>
+              <Link to="/movie:">Descobrir</Link>
             </li>
             <li>
-              <a href="/minha-lista">Minha lista</a>
+              <Link to="/">Minha Lista</Link>
             </li>
           </ul>
         </nav>
