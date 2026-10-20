@@ -13,6 +13,10 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 
 - **`files.autoSave: afterDelay` não dispara o formatar ao salvar.** Só o `Ctrl+S` (ou `onFocusChange`) formata. Se o `format:check` reclamar de um arquivo que "devia estar formatado", é isso.
 
+## TypeScript
+
+- **Derivar tipos em vez de copiar:** `Omit<Movie, 'genre_ids'> & { genres: Genre[] }` = o `Movie` sem um campo, mais outros.
+
 ## Vite e TypeScript
 
 - **O `index.html` na raiz é a entrada do projeto.** O servidor do Vite devolve ele em `/`, e o `<script type="module" src="/src/main.tsx">` puxa o resto. O Vite converte TSX para JS a cada pedido.
@@ -42,6 +46,7 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **Layout com `<Outlet />`:** a rota pai tem o que se repete (cabeçalho) e o `<Outlet />` marca onde a página filha entra. `index: true` é a filha do endereço exato do pai; `'*'` pega o que nenhuma rota casou.
 - **`pages/` x `components/`:** página é o componente ligado a uma rota; componentes são peças usadas pelas páginas.
 - **`<Link to>` em vez de `<a href>`:** troca de tela sem recarregar, mantendo o cache.
+- **`useParams()` devolve `string | undefined`**, porque não sabe em qual rota o componente está. `movieId!` (ou `as string`) é uma asserção: silencia o TypeScript. Aceitável quando a rota garante o parâmetro, mas a garantia fica invisível: se a rota for renomeada, ninguém avisa.
 
 ## TanStack Query
 
@@ -53,6 +58,9 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **Padrão no `QueryClient`, exceção na query.** `defaultOptions.queries.staleTime` vale para todas; uma query pode definir o próprio.
 - **`staleTime` ≠ `refetchInterval`.** O `staleTime` só diz se o dado está velho; a busca precisa de um gatilho (montar, foco, reconexão). Buscar sozinho de tempos em tempos é `refetchInterval`.
 - **Custom hook devolve o resultado do `useQuery` inteiro.** Desmontar em variáveis e montar um objeto novo quebra a ligação entre `isPending`, `error` e `data`, e o TypeScript volta a achar que `data` pode ser `undefined`.
+
+- **Tudo o que a `queryFn` usa entra na `queryKey`** (`['movies', 'details', movieId]`). Sem o id, todos os filmes dividem a mesma posição do cache. Com argumento, `queryFn: () => getMovieDetails(id)`; sem o `() =>`, a busca rodaria na hora.
+- **O TanStack Query repete buscas que falharam 3 vezes.** Inútil para 404. Com uma classe `TmdbError` que carrega o `status`, o `retry` decide: `false` para 404, até 3 para o resto.
 
 ## Camadas
 
@@ -78,4 +86,9 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **Conteúdo variável sob um título fixo:** calcular o conteúdo numa variável (`let content` + `if/else if/else`) e usar `{content}` num único `return`. JSX é um valor como outro qualquer.
 - **Código morto passa no lint, no TypeScript e no build.** Esqueci os `if ... return` antigos acima da versão nova, e o título continuou sumindo. Só o teste na tela mostrou. Ler o `git diff` antes do commit pega esse tipo de sobra.
 - **`<a href>` recarrega a página inteira** (perde estado e cache). Com React Router usa-se `<Link to>`, que vira um `<a>` no HTML mas troca de tela sem recarregar.
+- **Regra dos hooks:** sempre chamados, na mesma ordem, em toda renderização. Nunca depois de um `return` condicional nem dentro de `if`. Por isso os `if ... return` ficam depois de todos os hooks.
+- **Nem toda busca tem os mesmos estados.** Uma lista pode vir vazia; um filme ou vem ou dá 404. Erros do mais específico para o mais genérico (`404` antes do `if (error)`).
+- **Escolher o padrão pela necessidade:** `let content` serve para manter um título fixo; sem título fixo, retornos antecipados são mais simples.
+- **Não ampliar um componente compartilhado para um uso provisório** (ex.: fazer o `MovieCard` aceitar `MovieDetails`).
+- **`<p>` só contém texto:** `div` ou `p` dentro de `p` é HTML inválido, e o React avisa no console.
 - **Só envolver elementos com motivo** (estilo do grupo ou mais de um elemento). `<div>` ou Fragment em volta de um único elemento é camada sobrando.
