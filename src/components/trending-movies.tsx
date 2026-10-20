@@ -1,5 +1,7 @@
 import { useTrendingMovies } from '../hooks/use-trending-movies'
 import { MovieCard } from './movie-card'
+import { MovieCardSkeleton } from './movie-card-skeleton'
+import { MovieGrid } from './movie-grid'
 
 export function TrendingMovies() {
   const { data: movies, isPending, error } = useTrendingMovies()
@@ -7,18 +9,29 @@ export function TrendingMovies() {
   let content
 
   if (isPending) {
-    content = <p>Carregando…</p>
+    content = (
+      <>
+        <p className="sr-only">Carregando filmes…</p>
+        <div aria-hidden="true">
+          <MovieGrid>
+            {Array.from({ length: 10 }).map((_, index) => (
+              <MovieCardSkeleton key={index} />
+            ))}
+          </MovieGrid>
+        </div>
+      </>
+    )
   } else if (error) {
     content = <p>Não foi possível carregar os filmes.</p>
   } else if (movies.length === 0) {
     content = <p>Nenhum filme encontrado.</p>
   } else {
     content = (
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] gap-x-5 gap-y-7">
+      <MovieGrid>
         {movies.map((movie) => (
           <MovieCard movie={movie} key={movie.id} />
         ))}
-      </div>
+      </MovieGrid>
     )
   }
 
