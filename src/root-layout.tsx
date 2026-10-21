@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router'
+import { Outlet, ScrollRestoration } from 'react-router'
 import { Header } from './components/header'
 
 export function RootLayout() {
@@ -8,6 +8,7 @@ export function RootLayout() {
       <main className="mx-auto max-w-6xl px-6 py-10">
         <Outlet />
       </main>
+      <ScrollRestoration />
     </>
   )
 }
