@@ -14,7 +14,10 @@ export function MovieCard({ movie }: MovieCardProps) {
 
   return (
     <article>
-      <Link to={`/movie/${movie.id}`} className="flex flex-col gap-2 group rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">
+      <Link
+        to={`/movie/${movie.id}`}
+        className="group focus-visible:outline-primary flex flex-col gap-2 rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4"
+      >
         <div className="bg-card relative aspect-2/3 overflow-hidden rounded-xl">
           {movie.poster_path ? (
             <img
