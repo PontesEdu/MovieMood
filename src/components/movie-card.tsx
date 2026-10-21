@@ -1,18 +1,15 @@
 import { getImageUrl } from '../api/tmdb'
 import type { Movie } from '../types/movie'
+import { formatRating, formatYear } from '../utils/format'
 
 type MovieCardProps = {
   movie: Movie
 }
 
-const ratingFormatter = new Intl.NumberFormat('pt-BR', {
-  maximumFractionDigits: 1,
-})
-
 export function MovieCard({ movie }: MovieCardProps) {
-  const rating = ratingFormatter.format(movie.vote_average)
+  const rating = formatRating(movie.vote_average)
 
-  const year = movie.release_date.slice(0, 4)
+  const year = formatYear(movie.release_date)
 
   return (
     <article className="flex flex-col gap-2">
