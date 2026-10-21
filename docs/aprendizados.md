@@ -46,6 +46,8 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **Layout com `<Outlet />`:** a rota pai tem o que se repete (cabeçalho) e o `<Outlet />` marca onde a página filha entra. `index: true` é a filha do endereço exato do pai; `'*'` pega o que nenhuma rota casou.
 - **`pages/` x `components/`:** página é o componente ligado a uma rota; componentes são peças usadas pelas páginas.
 - **`<Link to>` em vez de `<a href>`:** troca de tela sem recarregar, mantendo o cache.
+- **SPA não restaura a rolagem sozinho:** o documento é sempre o mesmo, então a página nova abre onde a anterior estava. `<ScrollRestoration />`, uma vez no layout raiz, abre links novos no topo e devolve a posição ao voltar.
+- **Card inteiro como link** é simples, mas impede botões dentro dele (HTML proíbe elemento clicável dentro de link).
 - **`useParams()` devolve `string | undefined`**, porque não sabe em qual rota o componente está. `movieId!` (ou `as string`) é uma asserção: silencia o TypeScript. Aceitável quando a rota garante o parâmetro, mas a garantia fica invisível: se a rota for renomeada, ninguém avisa.
 
 ## TanStack Query
@@ -80,6 +82,11 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **O que não depende de props ou estado fica fora do componente** (ex.: `new Intl.NumberFormat`), senão é recriado a cada renderização.
 - **Card = partes empilhadas.** A caixa com `aspect-2/3` é só do pôster; título e ano ficam fora dela, senão transbordam.
 - **Caixa com proporção fixa evita layout shift:** o espaço da imagem é reservado antes dela carregar. `loading="lazy"` faz o navegador só baixar imagens perto da área visível.
+- **`<img>` x `background-image`:** imagem que vem dos dados vai em `<img>` (Tailwind não gera classe para URL dinâmica, e `<img>` tem `loading="lazy"` e `alt`). Decoração fixa do estilo (grade, textura) vai no CSS.
+- **Camadas com `absolute inset-0`** (imagem, degradê) e conteúdo com `relative` por cima. Prefixo `md:` = a partir de 768px.
+- **`{cond && <el />}` com número desenha o número:** `{lista.length && ...}` mostra `0`. Usar `lista.length > 0`.
+- **`group` / `group-hover:`** faz um filho reagir ao estado do pai. **`focus-visible:`** mostra o contorno só na navegação por teclado.
+- **Funções puras em `utils/`** (formatar nota, ano, duração): sem React, sem API. Tratar `null` dentro da função em vez de forçar com `!`.
 - **Hierarquia de títulos:** um `h1` por página, `h2` por seção, `h3` por item. Leitores de tela e o Google navegam por ela.
 - **Tipo de união de literais** (`'w342' | 'w780'`) restringe um parâmetro a valores conhecidos.
 - **Retorno antecipado vale para o componente inteiro.** Se o `App` faz `if (isPending) return`, o cabeçalho some junto. A busca de dados fica no componente que usa os dados.
