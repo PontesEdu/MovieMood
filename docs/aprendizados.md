@@ -9,6 +9,17 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **Um commit, um assunto.** `git add <arquivo>` em vez de `git add .` evita levar mudanças sem relação. Sempre `git status` antes de commitar.
 - **`push` recusado com `Permission denied (publickey)`** significa remoto em SSH sem chave cadastrada. `git remote -v` mostra o endereço; `git remote set-url origin <url https>` troca.
 
+## CI e Pull Requests
+
+- **CI roda num Linux limpo, só com o que está no commit.** Pega o que "funciona na minha máquina": arquivo esquecido fora do commit, formatação, lock desatualizado, maiúsculas em imports.
+- **Workflows só são lidos em `.github/workflows/`** (com **s**). Com outro nome, o GitHub ignora sem avisar.
+- **Um `git add` com um caminho errado não adiciona nada**, e os comandos seguintes falham em cascata. Ler a saída de cada comando e rodar `git status` entre `add` e `commit`.
+- **Alterar workflow exige a permissão `workflow` no token** (`gh auth refresh -h github.com -s workflow`).
+- **`npm ci` no CI:** instala exatamente o `package-lock.json` e falha se ele não bater com o `package.json`.
+- **Log do CI: ler a partir do primeiro erro.** Os passos seguintes nem rodaram. Reproduzir localmente com o mesmo comando.
+- **PR acompanha a branch:** corrigir é só commitar e enviar de novo na mesma branch.
+- **Squash and merge:** cada PR vira um commit na `main`, com o título do PR como mensagem (por isso o título segue Conventional Commits). `--delete-branch` apaga a branch depois.
+
 ## VS Code
 
 - **`files.autoSave: afterDelay` não dispara o formatar ao salvar.** Só o `Ctrl+S` (ou `onFocusChange`) formata. Se o `format:check` reclamar de um arquivo que "devia estar formatado", é isso.
