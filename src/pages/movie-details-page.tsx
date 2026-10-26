@@ -2,13 +2,14 @@ import { Link, useParams } from 'react-router'
 import { useMovieDetails } from '../hooks/use-movie-details'
 import { getImageUrl, TmdbError } from '../api/tmdb'
 import { formatRating, formatRuntime, formatYear } from '../utils/format'
+import { MovieDetailsSkeleton } from '../components/movie-details-skeleton'
 
 export function MovieDetailsPage() {
   const { movieId } = useParams()
 
   const { data: movie, isPending, error } = useMovieDetails(movieId!)
 
-  if (isPending) return <p>Carregando…</p>
+  if (isPending) return <MovieDetailsSkeleton />
 
   if (error instanceof TmdbError && error.status === 404) {
     return (
