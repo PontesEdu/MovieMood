@@ -2,9 +2,16 @@ const BASE_URL = 'https://api.themoviedb.org/3'
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/'
 const TOKEN = import.meta.env.VITE_TMDB_TOKEN
 
-export async function tmdbFetch<T>(path: string): Promise<T> {
+export async function tmdbFetch<T>(
+  path: string,
+  params: Record<string, string> = {},
+): Promise<T> {
   const url = new URL(`${BASE_URL}${path}`)
   url.searchParams.set('language', 'pt-BR')
+
+  for (const [key, value] of Object.entries(params)) {
+    url.searchParams.set(key, value)
+  }
 
   const response = await fetch(url, {
     headers: { Authorization: `Bearer ${TOKEN}` },
