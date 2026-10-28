@@ -12,6 +12,8 @@ export function MovieCard({ movie }: MovieCardProps) {
 
   const year = formatYear(movie.release_date)
 
+  const hasRating = movie.vote_average > 0
+
   return (
     <article>
       <Link
@@ -31,13 +33,15 @@ export function MovieCard({ movie }: MovieCardProps) {
               Sem imagem
             </div>
           )}
-          <div className="bg-background/85 absolute top-2 left-2 rounded-md px-2 py-1 text-sm font-semibold">
-            {rating}
-          </div>
+          {hasRating && (
+            <div className="bg-background/85 absolute top-2 left-2 rounded-md px-2 py-1 text-sm font-semibold">
+              {rating}
+            </div>
+          )}
         </div>
         <div className="flex flex-col gap-1">
           <h3 className="font-semibold">{movie.title}</h3>
-          <p className="text-muted-foreground text-sm">{year}</p>
+          {year && <p className="text-muted-foreground text-sm">{year}</p>}
         </div>
       </Link>
     </article>
