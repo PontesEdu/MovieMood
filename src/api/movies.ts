@@ -10,3 +10,9 @@ export async function getTrendingMovies() {
 export async function getMovieDetails(movieId: string) {
   return await tmdbFetch<MovieDetails>(`/movie/${movieId}`)
 }
+
+export async function searchMovies(query: string) {
+  const data = await tmdbFetch<MovieListResponse>('/search/movie', { query })
+
+  return data.results
+}
