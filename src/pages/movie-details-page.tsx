@@ -28,6 +28,9 @@ export function MovieDetailsPage() {
     .filter(Boolean)
     .join(' · ')
 
+
+    const isRatingEqualsZero = rating === "0" ? false : true
+
   return (
     <>
       <title>{`${movie.title} | MovieMood`}</title>
@@ -68,11 +71,11 @@ export function MovieDetailsPage() {
             </div>
 
             <p className="flex items-center gap-2 text-sm">
-              <span className="text-primary font-semibold">
+              {isRatingEqualsZero && <span className="text-primary font-semibold">
                 <span aria-hidden="true">★ </span>
                 <span className="sr-only">Nota </span>
                 {rating}
-              </span>
+              </span>}
               {details && (
                 <span className="text-muted-foreground">· {details}</span>
               )}
