@@ -26,3 +26,11 @@ export type MovieDetails = Omit<Movie, 'genre_ids'> & {
   runtime: number | null
   tagline: string
 }
+
+export type MovieSort = 'popular' | 'rating' | 'recent'
+
+export type MovieFilters = {
+  genre?: string
+  year?: string
+  sort?: MovieSort
+}
