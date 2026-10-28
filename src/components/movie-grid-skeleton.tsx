@@ -1,5 +1,5 @@
-import { MovieCardSkeleton } from "./movie-card-skeleton";
-import { MovieGrid } from "./movie-grid";
+import { MovieCardSkeleton } from './movie-card-skeleton'
+import { MovieGrid } from './movie-grid'
 
 export function MovieGridSkeleton() {
   return (

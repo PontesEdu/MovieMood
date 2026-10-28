@@ -10,6 +10,7 @@ import { HomePage } from './pages/home-page'
 import { MovieDetailsPage } from './pages/movie-details-page'
 import { NotFoundPage } from './pages/not-found-page'
 import { TmdbError } from './api/tmdb'
+import { DiscoverPage } from './pages/discover-page'
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, Component: HomePage },
       { path: 'movie/:movieId', Component: MovieDetailsPage },
+      { path: 'descobrir', Component: DiscoverPage },
       { path: '*', Component: NotFoundPage },
     ],
   },
