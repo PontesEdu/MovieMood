@@ -45,6 +45,8 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **`fetch` não lança erro em 401 ou 404**, só em falha de rede. O `if (!response.ok) throw ...` é obrigatório.
 - **`new URL` + `searchParams`** para montar endereços, em vez de juntar texto (trata espaços e `&`).
 - **`await` ou `.then()`, nunca os dois juntos.**
+- **Parâmetros como objeto** (`tmdbFetch(path, { query })`): `Object.entries` + `for` + `searchParams.set`. O `params` do axios fazia o mesmo por dentro. `{ query }` é atalho para `{ query: query }`.
+- **Decidir pelo dado, não pelo texto formatado:** `movie.vote_average > 0`, e não `rating === '0'`. Booleanos com nome de pergunta (`hasRating`).
 
 ## Dependências
 
@@ -57,6 +59,10 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **Layout com `<Outlet />`:** a rota pai tem o que se repete (cabeçalho) e o `<Outlet />` marca onde a página filha entra. `index: true` é a filha do endereço exato do pai; `'*'` pega o que nenhuma rota casou.
 - **`pages/` x `components/`:** página é o componente ligado a uma rota; componentes são peças usadas pelas páginas.
 - **`<Link to>` em vez de `<a href>`:** troca de tela sem recarregar, mantendo o cache.
+- **A URL é o estado da busca** (`useSearchParams`), não um `useState` sincronizado com `useEffect`. Endereço compartilhável, recarregar mantém, "voltar" funciona.
+- **`<Form>` do React Router com `method="get"`** (o padrão) transforma cada campo com `name` em parâmetro da URL, sem recarregar. Busca é navegação: não precisa de Actions do React 19, que são para operações que mudam algo.
+- **`key` fora de listas reinicia o elemento.** Campo não controlado só lê o `defaultValue` ao aparecer; com `key={query}`, o "voltar" recria o campo com o termo certo.
+- **Query desligada (`enabled: false`) fica `isPending: true` para sempre.** Tratar "sem busca" antes do `isPending`. `isLoading` é `isPending && isFetching`, mas trocar por ele deixaria `data` indefinido nos `if`s seguintes.
 - **SPA não restaura a rolagem sozinho:** o documento é sempre o mesmo, então a página nova abre onde a anterior estava. `<ScrollRestoration />`, uma vez no layout raiz, abre links novos no topo e devolve a posição ao voltar.
 - **Card inteiro como link** é simples, mas impede botões dentro dele (HTML proíbe elemento clicável dentro de link).
 - **`useParams()` devolve `string | undefined`**, porque não sabe em qual rota o componente está. `movieId!` (ou `as string`) é uma asserção: silencia o TypeScript. Aceitável quando a rota garante o parâmetro, mas a garantia fica invisível: se a rota for renomeada, ninguém avisa.
