@@ -46,7 +46,13 @@ export function DiscoverPage() {
   } else if (error) {
     content = <p>Não foi possível buscar os filmes.</p>
   } else if (movies.length === 0) {
-    content = <p>Nenhum filme encontrado para "{query}"</p>
+    content = (
+      <p>
+        {isSearching
+          ? `Nenhum filme encontrado para "${query}".`
+          : 'Nenhum filme encontrado com esses filtros.'}
+      </p>
+    )
   } else {
     content = (
       <MovieGrid>
@@ -92,6 +98,7 @@ export function DiscoverPage() {
             Gênero
           </label>
           <select
+            key={genres ? 'loaded' : 'loading'}
             id="genre"
             name="genre"
             defaultValue={filters.genre ?? ''}
