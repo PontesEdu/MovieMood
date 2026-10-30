@@ -18,7 +18,9 @@ export async function getMovieDetails(movieId: string) {
 }
 
 export async function getGenres() {
-  return await tmdbFetch<{ genres: Genre[] }>('/genre/movie/list')
+  const data = await tmdbFetch<{ genres: Genre[] }>('/genre/movie/list')
+
+  return data.genres
 }
 
 export async function searchMovies(query: string) {
