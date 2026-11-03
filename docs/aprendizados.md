@@ -27,6 +27,10 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 ## TypeScript
 
 - **Derivar tipos em vez de copiar:** `Omit<Movie, 'genre_ids'> & { genres: Genre[] }` = o `Movie` sem um campo, mais outros.
+- **`?` torna um campo opcional:** `{}` é um `MovieFilters` válido.
+- **`Record<MovieSort, ...>` obriga uma entrada para cada valor da união.** Acrescentou uma ordenação e esqueceu de traduzir, o TypeScript avisa.
+- **Validar texto externo em vez de `as`:** `parseSort` só deixa passar `'popular' | 'rating' | 'recent'`; um `?sort=abc` vira `'popular'`.
+- **"Compila" não é "faz o que eu quero".** `enabled: Boolean` passou no TypeScript porque o `enabled` também aceita função, e `Boolean(query)` é sempre `true`.
 
 ## Vite e TypeScript
 
@@ -47,6 +51,8 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **`await` ou `.then()`, nunca os dois juntos.**
 - **Parâmetros como objeto** (`tmdbFetch(path, { query })`): `Object.entries` + `for` + `searchParams.set`. O `params` do axios fazia o mesmo por dentro. `{ query }` é atalho para `{ query: query }`.
 - **Decidir pelo dado, não pelo texto formatado:** `movie.vote_average > 0`, e não `rating === '0'`. Booleanos com nome de pergunta (`hasRating`).
+- **Testar a API antes de planejar a tela.** `/search/movie` ignora filtros de gênero; `/discover/movie` não aceita texto. Ordenar por nota sem `vote_count.gte` traz filmes com 1 voto; ordenar por data sem `primary_release_date.lte` traz filmes de 2099.
+- **Copiar antes de alterar:** `{ ...SORT_PARAMS[sort] }`. Sem a cópia, o filtro de uma busca ficaria grudado no objeto compartilhado.
 
 ## Dependências
 
@@ -64,6 +70,8 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **`key` fora de listas reinicia o elemento.** Campo não controlado só lê o `defaultValue` ao aparecer; com `key={query}`, o "voltar" recria o campo com o termo certo.
 - **Query desligada (`enabled: false`) fica `isPending: true` para sempre.** Tratar "sem busca" antes do `isPending`. `isLoading` é `isPending && isFetching`, mas trocar por ele deixaria `data` indefinido nos `if`s seguintes.
 - **SPA não restaura a rolagem sozinho:** o documento é sempre o mesmo, então a página nova abre onde a anterior estava. `<ScrollRestoration />`, uma vez no layout raiz, abre links novos no topo e devolve a posição ao voltar.
+- **`key` no `<Form>` inteiro** (`searchParams.toString()`) recria todos os campos quando a URL muda. Campo `disabled` não é enviado.
+- **`defaultValue` de `select` com opções que chegam depois não funciona:** o valor é aplicado na criação, quando a opção ainda não existe. `key={genres ? 'loaded' : 'loading'}` recria o `select` quando a lista chega.
 - **Card inteiro como link** é simples, mas impede botões dentro dele (HTML proíbe elemento clicável dentro de link).
 - **`useParams()` devolve `string | undefined`**, porque não sabe em qual rota o componente está. `movieId!` (ou `as string`) é uma asserção: silencia o TypeScript. Aceitável quando a rota garante o parâmetro, mas a garantia fica invisível: se a rota for renomeada, ninguém avisa.
 
@@ -80,6 +88,9 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 
 - **Tudo o que a `queryFn` usa entra na `queryKey`** (`['movies', 'details', movieId]`). Sem o id, todos os filmes dividem a mesma posição do cache. Com argumento, `queryFn: () => getMovieDetails(id)`; sem o `() =>`, a busca rodaria na hora.
 - **O TanStack Query repete buscas que falharam 3 vezes.** Inútil para 404. Com uma classe `TmdbError` que carrega o `status`, o `retry` decide: `false` para 404, até 3 para o resto.
+- **`staleTime: Infinity`** para dados que não mudam (lista de gêneros): buscados uma vez por carregamento da página.
+- **Objeto na `queryKey`:** comparado pelo conteúdo, não pela referência, e a ordem dos campos não importa. `undefined` some da chave, `''` não: por isso `get('genre') || undefined`.
+- **Dois modos, dois hooks sempre chamados:** o `enabled` decide qual busca, um ternário escolhe qual resultado mostrar.
 
 ## Camadas
 
