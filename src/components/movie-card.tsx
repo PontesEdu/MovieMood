@@ -1,10 +1,10 @@
 import { Link } from 'react-router'
 import { getImageUrl } from '../api/tmdb'
-import type { Movie } from '../types/movie'
+import type { SavedMovie } from '../types/movie'
 import { formatRating, formatYear } from '../utils/format'
 
 type MovieCardProps = {
-  movie: Movie
+  movie: SavedMovie
 }
 
 export function MovieCard({ movie }: MovieCardProps) {
