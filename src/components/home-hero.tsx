@@ -25,6 +25,7 @@ export function HomeHero() {
 
   const genreNames = movie.genre_ids
     .map((id) => genres?.find((genre) => genre.id === id)?.name)
+    .filter(Boolean)
     .slice(0, 3)
     .join(' · ')
 
