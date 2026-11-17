@@ -6,6 +6,7 @@ import { MovieGridSkeleton } from '../components/movie-grid-skeleton'
 import type { MovieFilters, MovieSort } from '../types/movie'
 import { useGenres } from '../hooks/use-genres'
 import { useDiscoverMovies } from '../hooks/use-discover-movies'
+import { MoodChips } from '../components/mood-chips'
 
 const currentYear = new Date().getFullYear()
 const YEARS = Array.from({ length: 30 }, (_, index) => currentYear - index)
@@ -68,6 +69,7 @@ export function DiscoverPage() {
       <h2 className="font-display text-3xl font-bold tracking-tight">
         Descobrir filmes
       </h2>
+      <MoodChips />
       <Form
         key={searchParams.toString()}
         role="search"
