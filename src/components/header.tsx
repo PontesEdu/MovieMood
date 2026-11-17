@@ -1,6 +1,10 @@
 import { Link } from 'react-router'
+import { useWatchlist } from '../hooks/use-watchlist'
 
 export function Header() {
+  const { movies } = useWatchlist()
+  const count = movies.length
+
   return (
     <header className="border-b border-white/10">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
@@ -34,7 +38,22 @@ export function Header() {
               <Link to="/descobrir">Descobrir</Link>
             </li>
             <li>
-              <Link to="/minha-lista">Minha lista</Link>
+              <Link to="/minha-lista" className="flex items-center gap-2">
+                Minha lista
+                {count > 0 && (
+                  <>
+                    <span
+                      aria-hidden="true"
+                      className="bg-primary text-primary-foreground rounded-full px-2 py-0.5 text-xs font-semibold"
+                    >
+                      {count}
+                    </span>
+                    <span className="sr-only">
+                      , {count} {count === 1 ? 'filme salvo' : 'filmes salvos'}
+                    </span>
+                  </>
+                )}
+              </Link>
             </li>
           </ul>
         </nav>
