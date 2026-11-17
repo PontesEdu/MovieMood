@@ -13,6 +13,7 @@ import { TmdbError } from './api/tmdb'
 import { DiscoverPage } from './pages/discover-page'
 import { WatchlistProvider } from './context/watchlist-provider'
 import { WatchlistPage } from './pages/watchlist-page'
+import { ContainerLayout } from './container-layout'
 
 const router = createBrowserRouter([
   {
@@ -20,10 +21,15 @@ const router = createBrowserRouter([
     Component: RootLayout,
     children: [
       { index: true, Component: HomePage },
-      { path: 'movie/:movieId', Component: MovieDetailsPage },
-      { path: 'descobrir', Component: DiscoverPage },
-      { path: 'minha-lista', Component: WatchlistPage },
-      { path: '*', Component: NotFoundPage },
+      {
+        Component: ContainerLayout,
+        children: [
+          { path: 'movie/:movieId', Component: MovieDetailsPage },
+          { path: 'descobrir', Component: DiscoverPage },
+          { path: 'minha-lista', Component: WatchlistPage },
+          { path: '*', Component: NotFoundPage },
+        ],
+      },
     ],
   },
 ])
