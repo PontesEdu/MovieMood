@@ -3,11 +3,13 @@ import { useMovieDetails } from '../hooks/use-movie-details'
 import { getImageUrl, TmdbError } from '../api/tmdb'
 import { formatRating, formatRuntime, formatYear } from '../utils/format'
 import { MovieDetailsSkeleton } from '../components/movie-details-skeleton'
+import { useWatchlist } from '../hooks/use-watchlist'
 
 export function MovieDetailsPage() {
   const { movieId } = useParams()
 
   const { data: movie, isPending, error } = useMovieDetails(movieId!)
+  const { isSaved, toggle } = useWatchlist()
 
   if (isPending) return <MovieDetailsSkeleton />
 
@@ -29,6 +31,8 @@ export function MovieDetailsPage() {
     .join(' · ')
 
   const hasRating = movie.vote_average > 0
+
+  const saved = isSaved(movie.id)
 
   return (
     <>
@@ -103,6 +107,16 @@ export function MovieDetailsPage() {
                 {movie.overview}
               </p>
             )}
+
+            <button
+              type="button"
+              onClick={() => toggle(movie)}
+              aria-pressed={saved}
+              className="border-primary text-primary hover:bg-primary/10 aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-pressed:hover:bg-primary/90 focus-visible:outline-primary inline-flex h-11 w-fit items-center gap-2 rounded-xl border px-5 font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2"
+            >
+              <span aria-hidden="true">{saved ? '✓' : '+'}</span>
+              Minha lista
+            </button>
           </div>
         </div>
       </article>
