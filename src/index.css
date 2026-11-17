@@ -12,6 +12,18 @@
   --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
 }
 
+@utility bg-grid {
+  background-image:
+    linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(
+    ellipse 75% 60% at 50% 0%,
+    #000 30%,
+    transparent 100%
+  );
+}
+
 @layer base {
   body {
     @apply bg-background text-foreground font-sans antialiased;
