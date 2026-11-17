@@ -1,5 +1,7 @@
 import { Link } from 'react-router'
 import { useWatchlist } from '../hooks/use-watchlist'
+import { MovieGrid } from '../components/movie-grid'
+import { MovieCard } from '../components/movie-card'
 
 export function WatchlistPage() {
   const { movies } = useWatchlist()
@@ -20,7 +22,23 @@ export function WatchlistPage() {
         </Link>
       </div>
     )
+  } else {
+    content = (
+      <MovieGrid>
+        {movies.map((movie) => (
+          <MovieCard movie={movie} key={movie.id} />
+        ))}
+      </MovieGrid>
+    )
   }
 
-  return <div>{content}</div>
+  return (
+    <section className="flex flex-col gap-6">
+      <title>Minha lista | MovieMood</title>
+      <h2 className="font-display text-3xl font-bold tracking-tight">
+        Minha lista
+      </h2>
+      {content}
+    </section>
+  )
 }
