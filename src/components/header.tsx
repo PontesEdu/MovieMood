@@ -1,5 +1,8 @@
-import { Link } from 'react-router'
+import { NavLink } from 'react-router'
 import { useWatchlist } from '../hooks/use-watchlist'
+
+const NAV_LINK_CLASS =
+  'text-muted-foreground hover:text-foreground aria-[current=page]:text-primary font-medium transition-colors'
 
 export function Header() {
   const { movies } = useWatchlist()
@@ -29,16 +32,23 @@ export function Header() {
           </h1>
         </div>
 
-        <nav>
+        <nav aria-label="Principal">
           <ul className="flex items-center gap-6">
             <li>
-              <Link to="/">Início</Link>
+              <NavLink to="/" end className={NAV_LINK_CLASS}>
+                Início
+              </NavLink>
             </li>
             <li>
-              <Link to="/descobrir">Descobrir</Link>
+              <NavLink to="/descobrir" className={NAV_LINK_CLASS}>
+                Descobrir
+              </NavLink>
             </li>
             <li>
-              <Link to="/minha-lista" className="flex items-center gap-2">
+              <NavLink
+                to="/minha-lista"
+                className={`${NAV_LINK_CLASS} flex items-center gap-2`}
+              >
                 Minha lista
                 {count > 0 && (
                   <>
@@ -53,7 +63,7 @@ export function Header() {
                     </span>
                   </>
                 )}
-              </Link>
+              </NavLink>
             </li>
           </ul>
         </nav>
