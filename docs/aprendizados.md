@@ -8,6 +8,8 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **No `.gitignore`, a última regra que casa vence.** A exceção (`!.env.example`) vem depois da regra geral (`.env*`). `git check-ignore -v <arquivo>` mostra qual linha decidiu.
 - **Um commit, um assunto.** `git add <arquivo>` em vez de `git add .` evita levar mudanças sem relação. Sempre `git status` antes de commitar.
 - **`push` recusado com `Permission denied (publickey)`** significa remoto em SSH sem chave cadastrada. `git remote -v` mostra o endereço; `git remote set-url origin <url https>` troca.
+- **Criar branch sempre a partir da `main` atualizada** (`git switch main`, `git pull`, `git switch -c`). Saindo de outra branch, os commits dela vão junto. Correção: `git rebase main` depois do merge; commits que já estão na `main` são pulados.
+- **Token vazado se resolve gerando outro**, não escondendo o arquivo: o antigo para de funcionar.
 
 ## CI e Pull Requests
 
@@ -51,6 +53,7 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **`await` ou `.then()`, nunca os dois juntos.**
 - **Parâmetros como objeto** (`tmdbFetch(path, { query })`): `Object.entries` + `for` + `searchParams.set`. O `params` do axios fazia o mesmo por dentro. `{ query }` é atalho para `{ query: query }`.
 - **Decidir pelo dado, não pelo texto formatado:** `movie.vote_average > 0`, e não `rating === '0'`. Booleanos com nome de pergunta (`hasRating`).
+- **`filter(Boolean)` antes do `slice`:** `[undefined].join(' · ')` vira texto, e um texto `' ·  · '` passa no `&&`. Tirar os vazios primeiro, cortar depois.
 - **Testar a API antes de planejar a tela.** `/search/movie` ignora filtros de gênero; `/discover/movie` não aceita texto. Ordenar por nota sem `vote_count.gte` traz filmes com 1 voto; ordenar por data sem `primary_release_date.lte` traz filmes de 2099.
 - **Copiar antes de alterar:** `{ ...SORT_PARAMS[sort] }`. Sem a cópia, o filtro de uma busca ficaria grudado no objeto compartilhado.
 
@@ -72,6 +75,7 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **SPA não restaura a rolagem sozinho:** o documento é sempre o mesmo, então a página nova abre onde a anterior estava. `<ScrollRestoration />`, uma vez no layout raiz, abre links novos no topo e devolve a posição ao voltar.
 - **`key` no `<Form>` inteiro** (`searchParams.toString()`) recria todos os campos quando a URL muda. Campo `disabled` não é enviado.
 - **`defaultValue` de `select` com opções que chegam depois não funciona:** o valor é aplicado na criação, quando a opção ainda não existe. `key={genres ? 'loaded' : 'loading'}` recria o `select` quando a lista chega.
+- **Rota de layout sem `path`** só acrescenta uma moldura (ex.: o container) às rotas filhas, sem mudar o endereço. A Home ficou fora dela para o banner ir de ponta a ponta.
 - **Card inteiro como link** é simples, mas impede botões dentro dele (HTML proíbe elemento clicável dentro de link).
 - **`useParams()` devolve `string | undefined`**, porque não sabe em qual rota o componente está. `movieId!` (ou `as string`) é uma asserção: silencia o TypeScript. Aceitável quando a rota garante o parâmetro, mas a garantia fica invisível: se a rota for renomeada, ninguém avisa.
 
@@ -127,3 +131,13 @@ Registro curto do que aprendi construindo o MovieMood: erros, decisões e concei
 - **Não ampliar um componente compartilhado para um uso provisório** (ex.: fazer o `MovieCard` aceitar `MovieDetails`).
 - **`<p>` só contém texto:** `div` ou `p` dentro de `p` é HTML inválido, e o React avisa no console.
 - **Só envolver elementos com motivo** (estilo do grupo ou mais de um elemento). `<div>` ou Fragment em volta de um único elemento é camada sobrando.
+- **Estados vêm da origem dos dados:** a busca na rede tem carregando, erro, vazio e sucesso; uma lista do `localStorage` só tem vazio e com itens.
+- **Context no React 19:** `<Contexto value>` sem `.Provider`, lido com `use(Contexto)`. Hook que lança erro fora do Provider. Contexto, Provider e hook em arquivos separados (regra do Fast Refresh).
+- **`useEffect` certo:** sincronizar com algo de fora do React (`localStorage`). `useState(loadMovies)` sem parênteses lê só na primeira renderização.
+- **Tipos não existem em execução:** passar um `MovieDetails` onde se espera `SavedMovie` leva todos os campos; copiar só os necessários.
+- **Componente pede só o que usa** (`SavedMovie` no card). Diferente de ampliar o tipo para um uso provisório.
+- **`useOptimistic` serve para esperar um servidor.** Com `localStorage` a atualização já é instantânea; usar seria código sem função.
+- **`aria-pressed` / `aria-current`** servem ao leitor de tela e ao estilo (`aria-pressed:bg-primary`). Com `aria-pressed` o texto do botão fica fixo.
+- **Componente decorativo pode falhar em silêncio** (`return null`) quando outra parte da tela já mostra o erro.
+- **Camadas com posição:** elementos `relative`/`absolute` são desenhados por cima dos que não são. O conteúdo precisa de `relative` para ficar na frente de uma camada `absolute`. `pointer-events-none` deixa os cliques passarem.
+- **Grade só com CSS:** dois `linear-gradient` de 1px + `background-size` repetem linhas horizontais e verticais; `mask-image` com `radial-gradient` some com as bordas. `@utility` cria a classe `bg-grid` no Tailwind v4.
