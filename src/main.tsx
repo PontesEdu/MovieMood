@@ -11,6 +11,7 @@ import { MovieDetailsPage } from './pages/movie-details-page'
 import { NotFoundPage } from './pages/not-found-page'
 import { TmdbError } from './api/tmdb'
 import { DiscoverPage } from './pages/discover-page'
+import { WatchlistProvider } from './context/watchlist-provider'
 
 const router = createBrowserRouter([
   {
@@ -40,7 +41,9 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <WatchlistProvider>
+        <RouterProvider router={router} />
+      </WatchlistProvider>
       <ReactQueryDevtools />
     </QueryClientProvider>
   </StrictMode>,
